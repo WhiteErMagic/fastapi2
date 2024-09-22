@@ -1,6 +1,10 @@
 from datetime import datetime
-from typing import Literal
-from pydantic import BaseModel
+from typing import Literal, Optional
+
+from fastapi_filter.contrib.sqlalchemy import Filter
+from pydantic import BaseModel, Field
+
+from models import Advertisements
 
 
 class IdReturnBase(BaseModel):
@@ -43,3 +47,13 @@ class UpdateAdvertisementsResponse(IdReturnBase):
 
 class DeleteAdvertisementsResponse(StatusSuccessBase):
     pass
+
+
+class AdvertisementsFilter(Filter):
+    title__in: Optional[list[str]] = Field(alias="titlestr")
+
+    class Constants(Filter.Constants):
+        model = Advertisements
+
+    class Config:
+        allow_population_by_field_name = True

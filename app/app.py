@@ -1,5 +1,8 @@
 import fastapi
 import pydantic
+from fastapi_filter import FilterDepends
+from sqlalchemy import select
+
 from lifespan import lifespan
 import schema
 from dependencies import SessionDependency
@@ -41,3 +44,9 @@ async def delete_advertisement(id: int, session: SessionDependency):
     advertisement = await crud.get_item(session, models.Advertisements, id)
     await delete_advertisement(advertisement)
     return {STATUS_SUCCESS_RESPONSE}
+
+
+@app.get('/advertisements?title=titlestr}', response_model=schema.GetAdvertisementsResponse)
+async def get_product(session: SessionDependency, filter: schema.AdvertisementsFilter = FilterDepends(schema.AdvertisementsFilter)) -> list:
+    query_filter = filter.filter(select(models.Advertisements))
+    return session.exec(query_filter).all()
