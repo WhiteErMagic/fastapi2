@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Literal, Optional
-
+import uuid
 from fastapi_filter.contrib.sqlalchemy import Filter
 from pydantic import BaseModel, Field
 
@@ -24,6 +24,12 @@ class GetAdvertisementsResponse(BaseModel):
     user: int
 
 
+class GetUserResponse(BaseModel):
+
+    id: int
+    name: str
+
+
 class CreateAdvertisementsRequest(BaseModel):
     title: str
     description: str
@@ -45,7 +51,15 @@ class UpdateAdvertisementsResponse(IdReturnBase):
     pass
 
 
+class UpdateUserResponse(IdReturnBase):
+    pass
+
+
 class DeleteAdvertisementsResponse(StatusSuccessBase):
+    pass
+
+
+class DeleteUserResponse(StatusSuccessBase):
     pass
 
 
@@ -57,3 +71,21 @@ class AdvertisementsFilter(Filter):
 
     class Config:
         allow_population_by_field_name = True
+
+
+class LoginReuest(BaseModel):
+    login: str
+    password: str
+
+
+class LoginResponse(BaseModel):
+    token: uuid.UUID
+
+
+class CreateUserRequest(BaseModel):
+    login: str
+    password: str
+
+
+class CreateUserResponse(IdReturnBase):
+    pass

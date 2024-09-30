@@ -1,6 +1,12 @@
 import requests
 
 
+response = requests.post('http://127.0.0.1:8080/user/',
+                                    json={
+                                          'name': 'user_1',
+                                          'password': '1234'
+                                    })
+
 response = requests.post('http://127.0.0.1:8080/advertisements/',
                                     json={
                                           'title': 'title222',
